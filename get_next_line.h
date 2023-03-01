@@ -6,7 +6,7 @@
 /*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:42:38 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/02/28 17:08:06 by zvandeven        ###   ########.fr       */
+/*   Updated: 2023/03/01 13:52:35 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <limits.h>
 
 char	*get_next_line(int fd);
 int		ft_checknewline(char *buf);

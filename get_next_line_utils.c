@@ -6,7 +6,7 @@
 /*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 14:15:27 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/02/28 16:47:36 by zvandeven        ###   ########.fr       */
+/*   Updated: 2023/03/01 16:26:12 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,23 @@ char	*ft_strdup(const char *s)
 	dest[i] = '\0';
 	return (dest);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	*str;
+
+	str = (char *)s;
+	while (*str != (char)c)
+	{
+		if (*str == '\0')
+		{
+			return (NULL);
+		}
+		str++;
+	}
+	return (str);
+}
+
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
@@ -71,7 +88,7 @@ int	ft_checknewline(char *s)
 			return (i);
 		i++;
 	}
-	return (i);
+	return (0);
 }
 
 size_t	ft_strlen(const char *s)

@@ -6,7 +6,7 @@
 /*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/02/28 17:53:48 by zvandeven        ###   ########.fr       */
+/*   Updated: 2023/03/01 17:24:23 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,6 @@ void	ft_putstr_fd(char *s, int fd)
 	}
 }
 
-void	ft_checkzero(long int a, int fd)
-{
-	if (a == 0)
-	{
-		write (fd, "0", 1);
-	}
-}
-
 int	main()
 {
 	int fd;
@@ -48,7 +40,10 @@ int	main()
 		}
 	printf("first line = %s\n", get_next_line(fd));
 	printf("second line = %s\n", get_next_line(fd));
-	printf("second line = %s\n", get_next_line(fd));
+	printf("third line = %s\n", get_next_line(fd));
+	printf("fourth line = %s\n", get_next_line(fd));
+	printf("fifth line = %s\n", get_next_line(fd));
+	printf("sixth line = %s\n", get_next_line(fd));
 	if (close(fd) == -1)
 		ft_putstr_fd("close() failed\n", 1);
 	return 0;
