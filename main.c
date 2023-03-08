@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/02 15:46:45 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/07 19:41:34 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,30 @@ void	ft_putstr_fd(char *s, int fd)
 
 int	main(int argc, char **argv)
 {
-	int fd;
+	int	fd;
 
-	if (argc == 1)
-		fd = 0;
-	if (argc == 2)
+	(void)**argv;
+	fd = 0;
+	if (argc == 2 || argc == 1)
 	{
-		fd = open(argv[1], O_RDONLY);
+		// if (argc == 1)
+		// 	fd = 0;
+		if (argc == 1)
+			fd = open("tests/lines_around_10.txt", O_RDONLY);
 		if (fd == -1)
 		{
-			ft_putstr_fd("open() failed failed\n", 1);
+			ft_putstr_fd("open() failed\n", 1);
 		}
 		printf("first line = %s\n", get_next_line(fd));
-		printf("second line = %s\n", get_next_line(fd));
-		printf("third line = %s\n", get_next_line(fd));
-		printf("fourth line = %s\n", get_next_line(fd));
-		printf("fifth line = %s\n", get_next_line(fd));
-		printf("sixth line = %s\n", get_next_line(fd));
+		// printf("second line = %s\n", get_next_line(fd));
+		// printf("third line = %s\n", get_next_line(fd));
+		// printf("fourth line = %s\n", get_next_line(fd));
+		// printf("fifth line = %s\n", get_next_line(fd));
+		// printf("sixth line = %s\n", get_next_line(fd));
+		if (close(fd) == -1)
+			ft_putstr_fd("close() failed\n", 1);
 	}
 	if (argc > 2)
 		printf("Too many arguments!");
-	if (close(fd) == -1)
-		ft_putstr_fd("close() failed\n", 1);
 	return (0);
 }

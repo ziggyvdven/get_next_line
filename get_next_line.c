@@ -5,97 +5,108 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/28 12:07:40 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/02 17:16:16 by zvan-de-         ###   ########.fr       */
+/*   Created: 2023/03/07 12:43:39 by zvan-de-          #+#    #+#             */
+/*   Updated: 2023/03/07 19:58:07 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <limits.h>
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_make_stash(char *stash, char *buf, int fd)
 {
-	size_t	i;
-	size_t	j;
-	char	*str;
+	char	*temp;
 
-	if (!s1 || !s2)
-		return (0);
-	j = 0;
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!(str))
-		return (NULL);
-	i = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[j++] = s2[i++];
-	str[j] = '\0';
-	if (str[0] == '\0')
-		free (str);
-	return (str);
+	if (stash == NULL)
+	{
+		stash = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (!stash)
+			return (NULL);
+		ft_strlcpy(stash, buf, BUFFER_SIZE + 1);
+	}
+	if (!ft_strchr(stash, '\n'))
+		stash = ft_read_line(stash, buf, fd);
+	else if (ft_strchr(stash, '\n'))
+	{
+		temp = ft_calloc(1, ft_strlen(stash) - ft_strchr(stash, '\n'));
+		ft_strlcpy(temp, stash + ft_strchr(stash, '\n'),
+			ft_strlen(stash) - ft_strchr(stash, '\n') + 1);
+		ft_free (stash);
+		return (ft_read_line(temp, buf, fd));
+	}	
+	if (stash == NULL)
+		ft_free(stash);
+	return (stash);
+}
+
+char	*ft_free(char *s)
+{
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
+	return (s);
 }
 
 char	*ft_read_line(char *stash, char *buf, int fd)
 {
 	int		read_nb;
+	char	*tmp;
 
 	read_nb = BUFFER_SIZE;
-	while (!(ft_strchr(stash, '\n')) && read_nb == BUFFER_SIZE)
+	while (ft_strchr(buf, '\n') == 0 && read_nb == BUFFER_SIZE)
 	{
 		read_nb = read(fd, buf, BUFFER_SIZE);
-		if (read_nb == -1)
+		if (read_nb < 0)
 		{
-			free (stash);
-			free(buf);
+			ft_free (buf);
 			return (NULL);
 		}
-		stash = ft_strjoin(stash, buf);
 		if (read_nb != BUFFER_SIZE)
-		stash = ft_substr(stash, 0, ft_strlen(stash) - (BUFFER_SIZE - read_nb));
+		{
+			tmp = ft_calloc(sizeof(char), read_nb + 1);
+			ft_strlcpy(tmp, buf, read_nb + 1);
+			stash = ft_strjoin(stash, tmp);
+		}
+		else
+		stash = ft_strjoin(stash, buf);
 	}
 	return (stash);
 }
 
-char	*make_new_line(char *stash)
+char	*ft_new_line(char *stash)
 {
 	char	*new_line;
 
 	if (ft_strchr(stash, '\n'))
-		new_line = ft_substr(stash, 0, ft_checknewline(stash) + 1);
+	new_line = ft_calloc(sizeof(char), ft_strchr(stash, '\n') + 1);
 	else
-		new_line = ft_substr(stash, 0, ft_strlen(stash));
+	new_line = ft_calloc(sizeof(char), ft_strlen(stash) + 1);
 	if (!new_line)
-		free(new_line);
+		return (NULL);
+	if (ft_strchr(stash, '\n'))
+		ft_strlcpy(new_line, stash, ft_strchr(stash, '\n') + 1);
+	else
+	{
+		ft_strlcpy(new_line, stash, ft_strlen(stash) + 1);
+		ft_free(stash);
+	}
 	return (new_line);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buf;
-	static char	*stash;
-	char		*new_line;
+	char			*buf;
+	static char		*stash;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE));
+	buf = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	if (!buf)
+		return (ft_free(buf));
+	stash = ft_make_stash(stash, buf, fd);
+	ft_free (buf);
+	if (ft_strlen(stash) == 0)
 		return (NULL);
-	if (stash == NULL)
-		stash = ft_strdup(buf);
-	if (!stash)
-		free(stash);
-	stash = ft_read_line(stash, buf, fd);
-	if (!stash || !ft_strlen(stash))
-	{
-		free (stash);
-		return (NULL);
-	}
-	free (buf);
-	new_line = make_new_line(stash);
-	stash = ft_substr(stash, ft_checknewline(stash) + 1, (BUFFER_SIZE));
-	if (!stash)
-		free (stash);
-	return (new_line);
+	return (ft_new_line(stash));
 }
