@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
+/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 14:15:27 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/08 16:57:42 by zvandeven        ###   ########.fr       */
+/*   Updated: 2023/03/09 14:25:05 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strlcpy(char *dst, char *src, int dstsize)
 	int	i;
 
 	i = 0;
+	if (!src || !dst)
+		return (0);
 	if (dstsize != 0)
 	{
 		while (src[i] != '\0' && i < dstsize - 1)
@@ -54,6 +56,8 @@ int	ft_strchr(const char *s, int c)
 
 	i = 0;
 	str = (char *)s;
+	if (!s)
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == c)
@@ -73,6 +77,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i] != '\0')
 		i++;
 	return (i);
@@ -81,24 +87,24 @@ size_t	ft_strlen(const char *s)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
-	size_t	j;
 	char	*str;
+	int		len;
 
-	if (!s1 || !s2)
+	if (!s2)
 		return (0);
-	j = 0;
-	str = (char *)ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	len = ft_strlen(s1);
+	str = (char *)ft_calloc(sizeof(char), len + ft_strlen(s2) + 1);
 	if (!(str))
 		return (NULL);
-	i = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
+	ft_strlcpy(str, s1, len + 1);
 	i = 0;
 	while (s2[i])
-		str[j++] = s2[i++];
-	str[j] = '\0';
+	{
+		str[len + i] = s2[i];
+		i++;
+	}
 	if (str[0] == '\0')
 		free (str);
-	free((void *) s1);
+	free (s1);
 	return (str);
 }

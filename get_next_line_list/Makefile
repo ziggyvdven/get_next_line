@@ -6,7 +6,7 @@
 #    By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 13:45:36 by zvandeven         #+#    #+#              #
-#    Updated: 2023/03/09 17:30:31 by zvan-de-         ###   ########.fr        #
+#    Updated: 2023/03/09 16:18:58 by zvan-de-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS	= get_next_line.c get_next_line_utils.c \
 all: $(NAME)
 
 $(BINDIR)%.o: %.c
-	$(CC) $(CFLAGS) -D BUFFER_SIZE=42 -c -o $@ $<
+	$(CC) $(CFLAGS) -D BUFFER_SIZE=1 -c -o $@ $<
 
 $(NAME): $(BINDIR) $(OBJS)
 	ar rc $(NAME) $(OBJS)

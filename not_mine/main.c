@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/09 14:43:49 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:35:43 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 		// if (argc == 1)
 		// 	fd = 0;
 		if (argc == 1)
-			fd = open("tests/lines_around_10.txt", O_RDONLY);
+			fd = open("../tests/lines_around_10.txt", O_RDONLY);
 		if (fd == -1)
 		{
 			ft_putstr_fd("open() failed\n", 1);
