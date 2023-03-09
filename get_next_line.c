@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 12:43:39 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/07 19:58:07 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:07:44 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_read_line(char *stash, char *buf, int fd)
 	char	*tmp;
 
 	read_nb = BUFFER_SIZE;
-	while (ft_strchr(buf, '\n') == 0 && read_nb == BUFFER_SIZE)
+	while (ft_strchr(buf, '\n') == 0 && read_nb != 0)
 	{
 		read_nb = read(fd, buf, BUFFER_SIZE);
 		if (read_nb < 0)
