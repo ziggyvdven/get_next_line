@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 12:43:39 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/09 17:48:05 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:22:54 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	called. otherwise it checks if there is a new line in the stash and then 
 	eiteher read the file or creates a stash if its the end of the file	*/
 
-char	*ft_make_stash(char *stash, int fd)
+char	*make_stash(char *stash, int fd)
 {
 	char	*temp;
 
@@ -58,15 +58,14 @@ char	*ft_read_line(char *stash, int fd)
 	char	*buf;
 
 	read_nb = BUFFER_SIZE;
-	tmp = NULL;
 	while (ft_strchr(stash, '\n') == 0 && read_nb == BUFFER_SIZE)
 	{
 		buf = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		read_nb = read(fd, buf, BUFFER_SIZE);
 		if (read_nb < 0)
 			return (ft_free(buf));
-		if (read_nb == 0 && !stash)
-			return (NULL);
+		if (read_nb == 0)
+			break ;
 		if (read_nb != BUFFER_SIZE && read_nb != 0)
 		{
 			tmp = ft_calloc(sizeof(char), read_nb + 1);
@@ -95,28 +94,31 @@ char	*ft_new_line(char *stash)
 	if (ft_strchr(stash, '\n'))
 		ft_strlcpy(line, stash, ft_strchr(stash, '\n') + 1);
 	else
+	{
+		if (stash[0] == '\0')
+			return (NULL);
 		ft_strlcpy(line, stash, ft_strlen(stash) + 1);
+	}
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	static char		*stash;
-	char 			*new_line;
+	char			*gnl;
 
-	new_line = NULL;
-	if (ft_strchr(stash, '\n') != 0)
-		return (new_line = ft_new_line(stash), stash = ft_make_stash(stash, fd), new_line);
+	gnl = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = ft_make_stash(stash, fd);
+	stash = make_stash(stash, fd);
 	if (!stash)
 		return (NULL);
-	new_line = ft_new_line(stash);
-	if (new_line[0] == '\0')
-	{
-		free(stash);
-		stash = NULL;
-	}
-	return (new_line);
+	gnl = ft_new_line(stash);
+	// if (ft_strchr(gnl, '\n') == 0 || (gnl[0] == '\n' && ft_strlen(gnl) == 1)
+	// 	|| stash[ft_strlen(stash) - 1] == '\n')
+	// {
+	// 	free(stash);
+	// 	stash = NULL;
+	// }
+	return (gnl);
 }
