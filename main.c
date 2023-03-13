@@ -6,12 +6,13 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/13 16:51:27 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:55:52 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
+#include <stdio.h>
 
 void	ft_putchar_fd(char c, int fd)
 {
@@ -45,8 +46,14 @@ int	main(int argc, char **argv)
 		}
 		printf("first line = %s\n", get_next_line(fd));
 		printf("second line = %s\n", get_next_line(fd));
+		close (fd);
+		fd = open("tests/lines_around_10.txt", O_RDONLY);
+		fd = 4;
 		printf("third line = %s\n", get_next_line(fd));
 		printf("fourth line = %s\n", get_next_line(fd));
+		close (fd);
+		fd = open("tests/only_nl.txt", O_RDONLY);
+		fd = 5;
 		printf("fifth line = %s\n", get_next_line(fd));
 		printf("sixth line = %s\n", get_next_line(fd));
 		if (close(fd) == -1)
