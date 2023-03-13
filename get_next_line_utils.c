@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 14:15:27 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/09 14:25:05 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:33:56 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2, int r)
 {
 	size_t	i;
 	char	*str;
@@ -93,8 +93,11 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s2)
 		return (0);
 	len = ft_strlen(s1);
-	str = (char *)ft_calloc(sizeof(char), len + ft_strlen(s2) + 1);
-	if (!(str))
+	if (r == BUFFER_SIZE)
+		str = (char *)ft_calloc(sizeof(char), len + ft_strlen(s2) + 1);
+	else
+		str = (char *)ft_calloc(sizeof(char), len + r + 1);
+	if (str == NULL)
 		return (NULL);
 	ft_strlcpy(str, s1, len + 1);
 	i = 0;

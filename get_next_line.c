@@ -6,36 +6,89 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 12:43:39 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/10 14:22:54 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:33:00 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/* function thats creates the stash if it is the first time the function is 
-	called. otherwise it checks if there is a new line in the stash and then 
-	eiteher read the file or creates a stash if its the end of the file	*/
-
-char	*make_stash(char *stash, int fd)
+char	*ft_readline(char *s, int fd)
 {
-	char	*temp;
+	char	*buf;
+	int		read_nb;
 
-	temp = NULL;
-	if (!ft_strchr(stash, '\n'))
-		return (ft_read_line(stash, fd));
-	else if (ft_strchr(stash, '\n'))
+	read_nb = 1;
+	buf = NULL;
+	while (!ft_strchr(s, '\n') && read_nb != 0)
 	{
-		temp = ft_calloc(1, ft_strlen(stash) - ft_strchr(stash, '\n'));
-		ft_strlcpy(temp, stash + ft_strchr(stash, '\n'),
-			ft_strlen(stash) - ft_strchr(stash, '\n') + 1);
-		return (ft_read_line(temp, fd));
-	}	
-	if (stash == NULL)
-		ft_free(stash);
-	return (stash);
+		buf = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
+		if (buf == NULL)
+			return (NULL);
+		read_nb = read(fd, buf, BUFFER_SIZE);
+		if ((s == NULL && read_nb == 0) || read_nb == -1)
+		{
+			ft_free(s);
+			return (ft_free(buf));
+		}
+		if (read_nb != 0)
+			s = ft_strjoin(s, buf, read_nb);
+		free(buf);
+	}
+	return (s);
 }
 
-/* function thats frees allocated memory and then sets the pointer to zero.*/
+char	*ft_make_line(char *s, char *nl)
+{
+	int		i;
+	int		j;
+	char	*new_line;
+
+	if (s == NULL)
+		return (NULL);
+	j = 0;
+	i = 0;
+	if (ft_strchr(s, '\n'))
+		new_line = (char *)ft_calloc(sizeof(char), ft_strchr(s, '\n') + 1);
+	else
+		new_line = (char *)ft_calloc(sizeof(char), ft_strlen(s) + 1);
+	if (new_line == NULL)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		if (s[i] == '\n')
+		{
+			new_line[j++] = s[i];
+			break ;
+		}
+	new_line[j++] = s[i++];
+	}
+	free (nl);
+	return (new_line);
+}
+
+char	*ft_stash(char *stash_ptr)
+{
+	int		i;
+	int		j;
+	char	*s;
+	int		len;
+
+	len = ft_strlen(stash_ptr);
+	s = (char *)ft_calloc(sizeof(char), len - ft_strchr(stash_ptr, '\n') + 1);
+	if (s == NULL || stash_ptr == NULL)
+		return (ft_free(s));
+	i = 0;
+	while (stash_ptr[i] && stash_ptr[i] != '\n')
+		i++;
+	if (stash_ptr[i] && stash_ptr[i] == '\n')
+		i++;
+	j = 0;
+	while (stash_ptr[i])
+		s[j++] = stash_ptr[i++];
+	if (ft_strlen(s) == 0)
+		return (ft_free(s));
+	return (s);
+}
 
 char	*ft_free(char *s)
 {
@@ -47,78 +100,25 @@ char	*ft_free(char *s)
 	return (s);
 }
 
-/* function that reads a line and put what it has read in a buffer that 
- * it later joins to the stash it stops whe there is a newline or it is the 
- * end of the file*/
-
-char	*ft_read_line(char *stash, int fd)
-{
-	int		read_nb;
-	char	*tmp;
-	char	*buf;
-
-	read_nb = BUFFER_SIZE;
-	while (ft_strchr(stash, '\n') == 0 && read_nb == BUFFER_SIZE)
-	{
-		buf = (char *)ft_calloc(sizeof(char), BUFFER_SIZE + 1);
-		read_nb = read(fd, buf, BUFFER_SIZE);
-		if (read_nb < 0)
-			return (ft_free(buf));
-		if (read_nb == 0)
-			break ;
-		if (read_nb != BUFFER_SIZE && read_nb != 0)
-		{
-			tmp = ft_calloc(sizeof(char), read_nb + 1);
-			ft_strlcpy(tmp, buf, read_nb + 1);
-			stash = ft_strjoin(stash, tmp);
-			free (tmp);
-		}
-		else if (read_nb != 0)
-			stash = ft_strjoin(stash, buf);
-		free (buf);
-	}
-	return (stash);
-}
-
-/* function thats allocates memory for the new_line and fills it from the stash 
- * up to \n when at the end of the file it frees the stash */
-
-char	*ft_new_line(char *stash)
-{
-	char	*line;
-
-	if (ft_strchr(stash, '\n'))
-	line = ft_calloc(sizeof(char), ft_strchr(stash, '\n') + 1);
-	else
-	line = ft_calloc(sizeof(char), ft_strlen(stash) + 1);
-	if (ft_strchr(stash, '\n'))
-		ft_strlcpy(line, stash, ft_strchr(stash, '\n') + 1);
-	else
-	{
-		if (stash[0] == '\0')
-			return (NULL);
-		ft_strlcpy(line, stash, ft_strlen(stash) + 1);
-	}
-	return (line);
-}
-
 char	*get_next_line(int fd)
 {
-	static char		*stash;
-	char			*gnl;
+	static char		*stash = NULL;
+	char			*nl;
+	char			*tmp;
 
-	gnl = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	nl = NULL;
+	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	stash = make_stash(stash, fd);
-	if (!stash)
-		return (NULL);
-	gnl = ft_new_line(stash);
-	// if (ft_strchr(gnl, '\n') == 0 || (gnl[0] == '\n' && ft_strlen(gnl) == 1)
-	// 	|| stash[ft_strlen(stash) - 1] == '\n')
-	// {
-	// 	free(stash);
-	// 	stash = NULL;
-	// }
-	return (gnl);
+	if (read(fd, nl, 0) < 0)
+	{
+		free(stash);
+		stash = NULL;
+		return (stash);
+	}
+	tmp = ft_readline(stash, fd);
+	nl = ft_make_line(tmp, nl);
+	stash = ft_stash(tmp);
+	free(tmp);
+	tmp = NULL;
+	return (nl);
 }

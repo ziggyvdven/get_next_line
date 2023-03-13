@@ -6,11 +6,12 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/09 14:43:49 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:51:27 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
 
 void	ft_putchar_fd(char c, int fd)
 {
@@ -33,14 +34,11 @@ int	main(int argc, char **argv)
 {
 	int	fd;
 
-	(void)**argv;
-	fd = 0;
-	if (argc == 2 || argc == 1)
+	if (argc == 1)
+			fd = 0;
+	if (argc == 2)
 	{
-		// if (argc == 1)
-		// 	fd = 0;
-		if (argc == 1)
-			fd = open("tests/lines_around_10.txt", O_RDONLY);
+		fd = open(argv[1], O_RDONLY);
 		if (fd == -1)
 		{
 			ft_putstr_fd("open() failed\n", 1);
