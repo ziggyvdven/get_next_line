@@ -6,15 +6,15 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:42:38 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/13 17:32:00 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:59:50 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <sys/types.h>
-# include <sys/stat.h>
+# include <sys/uio.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>

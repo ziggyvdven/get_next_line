@@ -6,13 +6,14 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:13:10 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/13 17:55:52 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/14 11:01:39 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void	ft_putchar_fd(char c, int fd)
 {

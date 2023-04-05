@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:42:38 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/13 17:16:44 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/14 11:01:07 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define GET_NEXT_LINE_H
 
 # include <sys/types.h>
-# include <sys/stat.h>
+# include <sys/uio.h>
 # include <fcntl.h>
-# include <unistd.h>
 # include <stdlib.h>
 
 char	*get_next_line(int fd);

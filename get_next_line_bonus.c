@@ -6,7 +6,7 @@
 /*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 12:43:39 by zvan-de-          #+#    #+#             */
-/*   Updated: 2023/03/13 17:58:10 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:54:36 by zvan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_make_line(char *s, char *nl)
 	{
 		if (s[i] == '\n')
 		{
-			new_line[j++] = s[i];
+			new_line[j] = s[i];
 			break ;
 		}
 	new_line[j++] = s[i++];
@@ -74,7 +74,7 @@ char	*ft_stash(char *stash_ptr)
 	int		len;
 
 	len = ft_strlen(stash_ptr);
-	s = (char *)ft_calloc(sizeof(char), len - ft_strchr(stash_ptr, '\n') + 1);
+	s = (char *)malloc(sizeof(char) * (len - ft_strchr(stash_ptr, '\n') + 1));
 	if (s == NULL || stash_ptr == NULL)
 		return (ft_free(s));
 	i = 0;
@@ -85,6 +85,7 @@ char	*ft_stash(char *stash_ptr)
 	j = 0;
 	while (stash_ptr[i])
 		s[j++] = stash_ptr[i++];
+	s[j] = '\0';
 	if (ft_strlen(s) == 0)
 		return (ft_free(s));
 	return (s);
@@ -105,20 +106,14 @@ char	*get_next_line(int fd)
 	static char		*stash[OPEN_MAX];
 	char			*nl;
 	char			*tmp;
-	int				i;
 
-	i = 0;
 	nl = NULL;
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
 	if (read(fd, nl, 0) < 0)
 	{
-		while (stash[i] != NULL)
-		{
-		free (stash[i]);
-		stash[i] = NULL;
-		i++;
-		}
+		free (stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
 	tmp = ft_readline(stash[fd], fd);
