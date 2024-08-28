@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zvan-de- <zvan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zvandeven <zvandeven@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:42:38 by zvandeven         #+#    #+#             */
-/*   Updated: 2023/03/14 11:01:07 by zvan-de-         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:19:14 by zvandeven        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <unistd.h>
+
 
 char	*get_next_line(int fd);
 char	*ft_make_line(char *s, char *nl);
